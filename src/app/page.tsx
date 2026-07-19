@@ -1,65 +1,133 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Map, Bird, Scroll, Feather, Mail } from "lucide-react";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "SendPluma | O tempo devolve o peso às suas palavras.",
+  description:
+    "Envie cartas digitais no ritmo lento de aves virtuais. Fuja da ansiedade e crie conexões profundas no seu próprio tempo.",
+};
+
+const features = [
+  {
+    icon: Map,
+    title: "Rastreamento em Tempo Real",
+    description:
+      "O tempo de entrega é calculated com precisão matemática usando as coordenadas físicas exatas entre você e o destinatário.",
+  },
+  {
+    icon: Bird,
+    title: "Frota Personalizada",
+    description:
+      "De pombos clássicos a falcões velozes. Escolha o mensageiro ideal no catálogo de acordo com a urgência da sua carta.",
+  },
+  {
+    icon: Scroll,
+    title: "Abertura Imersiva",
+    description:
+      "A mensagem permanece protegida por um selo de cera virtual até a chegada. Uma interação tátil que valoriza quem lê.",
+  },
+];
+
+const Header = () => (
+  <header className="absolute top-0 left-0 right-0 py-8 px-6 flex justify-center items-center z-50">
+    <div className="flex items-center gap-2.5">
+      <div className="bg-zinc-900 text-white p-1.5 rounded-lg shadow-sm">
+        <Feather className="w-5 h-5" />
+      </div>
+      <span className="font-serif font-bold text-xl text-zinc-900 tracking-tight">SendPluma</span>
+    </div>
+  </header>
+);
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="relative min-h-screen bg-white font-sans">
+      <Header />
+      
+      {/* Hero */}
+      <section className="flex flex-col items-center justify-center text-center pt-48 pb-28 px-6">
+        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.08] tracking-tight text-zinc-900 max-w-3xl">
+          O tempo devolve o peso<br />às suas palavras.
+        </h1>
+
+        <h2 className="mt-8 text-zinc-600 text-lg sm:text-xl max-w-xl leading-relaxed font-normal">
+          Fuja da ansiedade do imediato. Envie cartas digitais que viajam no próprio
+          ritmo e acompanhe cada quilômetro. Transforme mensagens do dia a dia em
+          rituais inesquecíveis.
+        </h2>
+
+        <div className="mt-12">
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-2 bg-zinc-900 text-white text-sm font-medium px-8 py-3.5 rounded-full hover:bg-zinc-800 transition-colors shadow-sm"
+          >
+            Acessar o SendPluma
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      </section>
+
+      {/* Landscape / Ghibli Image */}
+      <section
+        className="relative w-full h-[500px]"
+        role="img"
+        aria-label="Montanhas azuis em camadas como uma paisagem de aquarela"
+      >
+        {/* Gradient fade: branco → transparente no topo */}
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
+
+        {/* Imagem de fundo */}
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1552152370-fb05b25ff17d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwxfHxtb3VudGFpbnMlMjBza3l8ZW58MHx8fGJsdWV8MTc4NDQ2MzM5Nnww&ixlib=rb-4.1.0&q=85')",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      </section>
+
+      {/* Features Grid */}
+      <section className="max-w-4xl mx-auto px-6 py-28 grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
+        {features.map((f) => {
+          const Icon = f.icon;
+          return (
+            <div key={f.title} className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-800 shadow-sm">
+                <Icon className="w-5 h-5 text-zinc-900" />
+              </div>
+              <h3 className="font-serif font-semibold text-lg text-zinc-900">{f.title}</h3>
+              <p className="text-sm text-zinc-600 leading-relaxed">{f.description}</p>
+            </div>
+          );
+        })}
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-zinc-100 py-8 text-center text-xs text-zinc-400">
+        <div className="flex items-center justify-center gap-2">
+          <span>© 2026 SendPluma</span>
+          <span className="flex items-center gap-1 text-zinc-500">
+            {/* Ícone de carta e ave reforçando o conceito */}
+            <Mail className="w-3.5 h-3.5 text-zinc-400" />
+            <Bird className="w-3.5 h-3.5 text-zinc-400 mr-1" />
+            Feito com muito café
+          </span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
