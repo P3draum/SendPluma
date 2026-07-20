@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createBrowserClient } from "@supabase/ssr";
 
 function GoogleIcon() {
   return (
@@ -27,29 +26,13 @@ function GoogleIcon() {
 }
 
 export default function GoogleLoginButton() {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleGoogleLogin() {
+  function handleGoogleLogin() {
     setLoading(true);
     setError(null);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-      if (error) throw error;
-    } catch (err: any) {
-      setError(err.message || "Falha ao entrar com o Google. Tente novamente.");
-      setLoading(false);
-    }
+    window.location.href = "/auth/google";
   }
 
   return (
