@@ -85,11 +85,7 @@ export default function PresentesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-100 font-sans relative overflow-hidden">
-      {/* Background Decorativo */}
-      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#cbd5e1_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none" />
-      <div className="absolute top-[10%] left-[-10%] w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-5%] w-[30rem] h-[30rem] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen font-sans relative">
 
       <PillNav />
 

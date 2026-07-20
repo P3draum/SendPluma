@@ -271,10 +271,6 @@ export default function PerfilPage() {
   return (
     <div className="min-h-screen text-zinc-900 font-sans flex flex-col">
       <PillNav />
-
-      <div className="absolute top-[20%] left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[20%] right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-
       <main className="flex-1 flex items-center justify-center p-6 pt-32 relative z-10">
         <div className="w-full max-w-xl bg-white border border-zinc-150 rounded-3xl p-8 sm:p-10 shadow-xs">
           
