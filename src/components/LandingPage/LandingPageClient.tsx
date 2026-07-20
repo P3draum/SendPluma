@@ -426,6 +426,7 @@ export default function LandingPageClient() {
                 alt="Falcão mensageiro carregando uma carta em voo"
                 fill
                 quality={95}
+                sizes="(max-width: 768px) 12rem, (max-width: 1024px) 20rem, 24rem"
                 className="object-contain"
               />
             </div>

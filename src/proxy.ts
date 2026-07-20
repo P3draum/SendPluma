@@ -51,7 +51,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/despachar") ||
     pathname.startsWith("/presentes") ||
     pathname.startsWith("/perfil") ||
-    pathname.startsWith("/apoiar");
+    pathname.startsWith("/apoiar") ||
+    pathname.startsWith("/onboarding");
 
   // 3. Se o usuário NÃO estiver logado e tentar acessar qualquer rota interna protegida, redireciona para /login
   if (!user && isDashboardRoute) {
@@ -71,6 +72,10 @@ export async function proxy(request: NextRequest) {
 
   return response;
 }
+
+// Next.js 16: adapterFn = middlewareModule.default || middlewareModule
+// Sem export default, adapterFn seria undefined → "adapterFn is not a function"
+export default proxy;
 
 // 5. Configuração do matcher para ignorar arquivos estáticos
 export const config = {

@@ -43,34 +43,40 @@ export default function PainelPage() {
 
   useEffect(() => {
     async function checkProfileAndFetchLetters() {
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError || !user) {
-        router.push("/login");
-        return;
+      try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+          router.push("/login");
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name, username")
+          .eq("id", user.id)
+          .single();
+
+        if (!profile || !profile.full_name || !profile.username) {
+          router.push("/onboarding");
+          return;
+        }
+
+        // Busca as cartas reais vinculando com os metadados da ave
+        const { data: lettersData } = await supabase
+          .from("letters")
+          .select("*, birds(name, image_url)")
+          .eq("sender_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (lettersData) {
+          setLetters(lettersData);
+        }
+      } catch (err) {
+        console.error("[painel] Erro ao carregar dados:", err);
+      } finally {
+        // Garante que o spinner sempre para, independente do caminho executado
+        setLoading(false);
       }
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("full_name, username")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || !profile.full_name || !profile.username) {
-        router.push("/onboarding");
-        return;
-      }
-
-      // Busca as cartas reais vinculando com os metadados da ave
-      const { data: lettersData, error: lettersError } = await supabase
-        .from("letters")
-        .select("*, birds(name, image_url)")
-        .eq("sender_id", user.id)
-        .order("created_at", { ascending: false });
-
-      if (!lettersError && lettersData) {
-        setLetters(lettersData);
-      }
-      setLoading(false);
     }
     checkProfileAndFetchLetters();
   }, [router]);
