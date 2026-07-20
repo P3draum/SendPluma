@@ -1,11 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const { searchParams, origin } = request.nextUrl;
+export async function GET(request: Request) {
+  const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  // Se o parâmetro "next" estiver presente, usa-o como redirecionamento, caso contrário redireciona para "/painel"
   const next = searchParams.get("next") ?? "/painel";
 
   if (code) {
@@ -24,8 +23,7 @@ export async function GET(request: NextRequest) {
                 cookieStore.set(name, value, options)
               );
             } catch (error) {
-              // O método setAll pode disparar exceções se chamado em contextos que não permitem alteração de cookies.
-              // Em Next.js Route Handlers, podemos capturar e tratar com segurança.
+              // Silencia erros caso seja chamado de um contexto que não permite escrita
             }
           },
         },
@@ -38,6 +36,6 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Redireciona o usuário de volta para a tela de login em caso de falha
-  return NextResponse.redirect(`${origin}/login?error=Ocorreu um erro no login com Google`);
+  // Se houver erro, redireciona para /login?error=falha-auth
+  return NextResponse.redirect(`${origin}/login?error=falha-auth`);
 }
