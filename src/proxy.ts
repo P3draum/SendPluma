@@ -62,9 +62,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  // 4. Se o usuário JÁ estiver logado e tentar acessar / (Landing Page) ou /login, redireciona para /painel
-  const isLandingOrLogin = pathname === "/" || pathname === "/login";
-  if (user && isLandingOrLogin) {
+  // 4. Se o usuário JÁ estiver logado e tentar acessar /login, redireciona para /painel
+  // (A landing page "/" é pública e acessível para todos, logados ou não)
+  if (user && pathname === "/login") {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/painel";
     return NextResponse.redirect(redirectUrl);
