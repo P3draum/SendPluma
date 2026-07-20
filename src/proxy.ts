@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -33,15 +33,15 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // Atualiza a sessão chamando getUser() conforme recomendação do Supabase
+  // Renova/atualiza a sessão
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
 
-  // 1. A rota /auth/callback deve ser pública e ignorada pelo bloqueio de autenticação
-  if (pathname.startsWith("/auth/callback")) {
+  // 1. Rota de callback pública e ignorada pelo bloqueio
+  if (pathname.startsWith("/auth/callback") || pathname.startsWith("/auth/google")) {
     return response;
   }
 
@@ -53,11 +53,10 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/perfil") ||
     pathname.startsWith("/apoiar");
 
-  // 3. Se o usuário NÃO estiver logado e tentar acessar qualquer rota interna, redireciona para /login
+  // 3. Se o usuário NÃO estiver logado e tentar acessar qualquer rota interna protegida, redireciona para /login
   if (!user && isDashboardRoute) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/login";
-    // Guarda o parâmetro "next" para redirecionamento após o login
     redirectUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(redirectUrl);
   }
