@@ -8,12 +8,16 @@
 }
 
 :root {
-  --background: #ffffff;
+  --background: #000000;
   --foreground: #18181b;
 }
 
+html, body {
+  /* Background preto evita flash de cor branca durante carregamento da landing page */
+  background: #000000;
+}
+
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 16px;
@@ -29,12 +33,15 @@ input, button, textarea, select {
   font-family: var(--font-handwriting), cursive;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/*
+  NOTA: scroll-behavior: smooth foi removido intencionalmente.
+  O GSAP ScrollTrigger com `pin: true` pode ter comportamento imprevisível
+  quando combinado com scroll suave nativo do browser. O GSAP controla
+  o scrolling das seções pinadas diretamente.
+*/
 
 /* Remove default textarea resize handle */
 textarea {
   resize: none;
 }
+
